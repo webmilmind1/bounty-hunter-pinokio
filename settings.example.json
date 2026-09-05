@@ -1,0 +1,6 @@
+{
+  "LLM_BASE_URL": "http://localhost:11434/v1",
+  "LLM_API_KEY": "not-needed-for-a-local-model",
+  "LLM_MODEL": "qwen2.5:7b",
+  "WALLET_KEY": ""
+}

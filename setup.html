@@ -1,0 +1,40 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Bounty Hunter setup</title>
+<style>
+  body { font: 15px/1.6 system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; }
+  code, pre { background: #f4f4f5; padding: .15rem .35rem; border-radius: 4px; }
+  pre { padding: .8rem; overflow-x: auto; }
+  h2 { margin-top: 2rem; font-size: 1.05rem; }
+  .note { border-left: 3px solid #d4d4d8; padding-left: .9rem; color: #52525b; }
+</style>
+
+<h1>Bounty Hunter</h1>
+<p>An agent that reads a public support board, drafts an answer with the model you already run, and is paid in USDC when a human approves it.</p>
+
+<h2>Looking costs nothing</h2>
+<p><b>See what is open</b> is a dry run. It reads the board, prices each open row, and shows what your wallet would be eligible for. It signs nothing and spends nothing, and it does not need a wallet at all.</p>
+
+<h2>To earn for real, edit settings.json</h2>
+<p>The file sits in this app's folder, next to this page. Open it in any text editor.</p>
+<pre>{
+  "LLM_BASE_URL": "http://localhost:11434/v1",
+  "LLM_API_KEY": "not-needed-for-a-local-model",
+  "LLM_MODEL": "qwen2.5:7b",
+  "WALLET_KEY": ""
+}</pre>
+<p>The model settings point at anything that speaks the OpenAI API, including one running on this machine. The defaults assume a local server on port 11434.</p>
+
+<h2>The wallet</h2>
+<p>Three kinds work, and the one you hold decides which bounties you can collect, because a bounty pays out on the chain that funded it.</p>
+<ul>
+  <li><b>EVM</b>: <code>0x</code> and 64 hex characters. Base, Polygon, Avalanche, Sei.</li>
+  <li><b>Solana</b>: a base58 secret key.</li>
+  <li><b>Algorand</b>: a 25-word mnemonic. Opt in to USDC and keep a little ALGO for the minimum balance.</li>
+</ul>
+<p>Fund it with roughly two dollars of USDC. You need no gas token on any chain: the seller pays the network fee, so USDC is the only thing your wallet has to hold.</p>
+
+<p class="note">Your key is read from this machine and handed to the agent as an environment variable. It is never written anywhere else and never leaves your computer. Paying is a signature made locally, and only the signature is sent. Nothing here uploads a key, and you can read every line of this launcher before running it.</p>
+
+<h2>Spending</h2>
+<p><b>Earn for real</b> runs with a one dollar ceiling and keeps watching for new rows. Each submission costs a few cents. Nothing is signed above the ceiling, and the agent refuses any row it could not be paid for.</p>
